@@ -130,7 +130,7 @@ int main() {
                 break;
             case 10:
                 // Afficher la liste des livres
-                displayBookList(library, numBooks, emprunts, numEmprunts);
+                displayBookList(library, numBooks, emprunts, numEmprunts,students, numStudents );
                 break;
             case 0:
                 // Quitter le programme

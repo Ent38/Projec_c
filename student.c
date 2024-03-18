@@ -1,19 +1,8 @@
+#include "student.h"
+#include "emprunt.h"
+#include "books.h" // Assurez-vous d'inclure le fichier d'en-tête books.h
 #include <stdio.h>
 #include <string.h>
-
-// Structure pour représenter un étudiant
-struct Student {
-    char name[50];
-    int number;
-    char email[50];
-    int codep;
-};
-
-// Structure pour représenter un emprunt
-struct Emprunt {
-    int student_number;
-    int book_code;
-};
 
 // Fonction pour créer un nouvel étudiant
 struct Student createStudent(char name[], int number, char email[], int codep) {
@@ -25,8 +14,8 @@ struct Student createStudent(char name[], int number, char email[], int codep) {
     return new_student;
 }
 
-// Fonction pour afficher la liste des étudiants avec indication de l'emprunt ou non d'un livre
-void displayStudentList(struct Student* students, int numStudents, struct Emprunt* emprunts, int numEmprunts) {
+// Fonction pour afficher la liste des étudiants avec indication du livre emprunté
+void displayStudentList(struct Student* students, int numStudents, struct Emprunt* emprunts, int numEmprunts, struct Book* library, int numBooks) {
     printf("Liste des étudiants :\n");
     for (int i = 0; i < numStudents; ++i) {
         printf("Nom : %s, Numéro : %d, Email : %s, Code postal : %d\n", students[i].name, students[i].number, students[i].email, students[i].codep);
@@ -34,13 +23,21 @@ void displayStudentList(struct Student* students, int numStudents, struct Emprun
         for (int j = 0; j < numEmprunts; ++j) {
             if (emprunts[j].student_number == students[i].number) {
                 emprunt_found = 1;
-                break;
+                // Recherche du livre emprunté
+                for (int k = 0; k < numBooks; ++k) {
+                    if (library[k].code == emprunts[j].book_code) {
+                        printf("  - Livre emprunté : %s\n", library[k].name);
+                        break;
+                    }
+                }
             }
         }
-        if (emprunt_found) {
-            printf("  - Un livre est emprunté\n");
-        } else {
+        if (!emprunt_found) {
             printf("  - Aucun livre emprunté\n");
+        }
+        else{
+            printf("ici il faut le mon du livre");
         }
     }
 }
+

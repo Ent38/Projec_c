@@ -4,6 +4,7 @@
 
 #include "emprunt.h"
 
+struct Book;
 // Structure pour représenter un étudiant
 struct Student {
     char name[50];
@@ -16,6 +17,6 @@ struct Student {
 struct Student createStudent(char name[], int number, char email[], int codep);
 
 // Fonction pour afficher la liste des étudiants avec indication de l'emprunt ou non d'un livre
-void displayStudentList(struct Student* students, int numStudents, struct Emprunt* emprunts, int numEmprunts);
+void displayStudentList(struct Student* students, int numStudents, struct Emprunt* emprunts, int numEmprunts, struct Book* library, int numBooks);
 
 #endif // STUDENT_H

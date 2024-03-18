@@ -1,7 +1,9 @@
 #ifndef BOOKS_H
 #define BOOKS_H
 
-// Structure pour représenter un livre
+#include "emprunt.h"  // Assurez-vous d'inclure le fichier d'en-tête emprunt.h
+struct Student;
+
 struct Book {
     char name[50];
     char category[50];
@@ -10,16 +12,10 @@ struct Book {
     int rented; // 1 si emprunté, 0 sinon
 };
 
-// Fonction pour créer un nouveau livre
+
 struct Book createBook(char name[], char category[], int code, char author[]);
-
-// Fonction pour supprimer un livre
 void deleteBook(struct Book* library, int code, int* numBooks);
-
-// Fonction pour modifier les détails d'un livre
 void editBook(struct Book* library, int code, char name[], char category[], char author[], int* numBooks);
-
-// Fonction pour afficher la liste des livres avec indication de l'emprunt ou non
-void displayBookList(struct Book* library, int numBooks, struct Emprunt* emprunts, int numEmprunts);
+void displayBookList(struct Book* library, int numBooks, struct Emprunt* emprunts, int numEmprunts, struct Student* students, int numStudents);
 
 #endif // BOOKS_H
