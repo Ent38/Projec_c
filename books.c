@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <string.h>
+
 // Structure pour représenter un livre
 struct Book {
     char name[50];
@@ -5,6 +8,12 @@ struct Book {
     int code;
     char author[50];
     int rented; // 1 si emprunté, 0 sinon
+};
+
+// Structure pour représenter un emprunt
+struct Emprunt {
+    int book_code;
+    // Ajoutez ici d'autres champs si nécessaire, par exemple la date de l'emprunt
 };
 
 // Fonction pour créer un nouveau livre

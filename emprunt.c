@@ -1,18 +1,11 @@
+#include <stdio.h>
+#include <string.h>
+
 // Structure pour représenter un emprunt
 struct Emprunt {
     int student_number;
     int book_code;
 };
-
-// Fonction pour créer un nouvel emprunt
-struct Emprunt createEmprunt(int student_number, int book_code) {
-    struct Emprunt new_emprunt;
-    new_emprunt.student_number = student_number;
-    new_emprunt.book_code = book_code;
-    return new_emprunt;
-}
-
-
 
 // Fonction pour créer un nouvel emprunt
 void createEmprunt(struct Emprunt* emprunts, int student_number, int book_code, int* numEmprunts) {

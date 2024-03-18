@@ -1,9 +1,18 @@
+#include <stdio.h>
+#include <string.h>
+
 // Structure pour représenter un étudiant
 struct Student {
     char name[50];
     int number;
     char email[50];
     int codep;
+};
+
+// Structure pour représenter un emprunt
+struct Emprunt {
+    int student_number;
+    int book_code;
 };
 
 // Fonction pour créer un nouvel étudiant
@@ -35,4 +44,3 @@ void displayStudentList(struct Student* students, int numStudents, struct Emprun
         }
     }
 }
-
