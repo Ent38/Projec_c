@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "student.h"
 #include "books.h"
 #include "emprunt.h"
@@ -19,6 +21,63 @@ void displayMenu() {
     printf("11. Afficher la liste des livres\n");
     printf("12. Afficher la liste des emprunts\n");
     printf("0. Quitter\n");
+}
+
+// Fonction pour valider un numéro d'étudiant
+int validateStudentNumber() {
+    int number;
+    char input[50];
+    char *endptr;
+    do {
+        printf("Entrez le numéro de l'étudiant : ");
+        scanf(" %[^\n]", input);
+        number = strtol(input, &endptr, 10); // Convertir la chaîne en nombre
+        if (*endptr != '\0' || number <= 0) { // Vérifier si la conversion a réussi et si le nombre est positif
+            printf("Numéro invalide. Veuillez entrer un nombre positif.\n");
+        }
+    } while (*endptr != '\0' || number <= 0);
+    return number;
+}
+
+// Fonction pour valider un nom ou un titre
+void validateName(char *name) {
+    do {
+        printf("Entrez le nom : ");
+        scanf(" %[^\n]", name);
+        if (strspn(name, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ") != strlen(name)) {
+            printf("Nom invalide. Veuillez entrer uniquement des lettres alphabétiques.\n");
+        }
+    } while (strspn(name, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ") != strlen(name));
+}
+
+// Fonction pour valider un email
+void validateEmail(char *email) {
+    do {
+        printf("Entrez l'email : ");
+        scanf(" %[^\n]", email);
+        char *atSign = strchr(email, '@');
+        char *dot = strchr(email, '.');
+        if (atSign == NULL || dot == NULL || atSign >= dot) {
+            printf("Email invalide. Veuillez entrer un email valide.\n");
+        }
+    } while (strchr(email, '@') == NULL || strchr(email, '.') == NULL || strchr(email, '@') >= strchr(email, '.'));
+}
+
+// Fonction pour valider un code de livre
+int validateBookCode() {
+    int code;
+    char input[50];
+    char *endptr;
+    do {
+        printf("Entrez le code du livre : ");
+        scanf(" %[^\n]", input);
+        
+        code = strtol(input, &endptr, 10); // Convertir la chaîne en nombre
+        if (*endptr != '\0' || code <= 0) { // Vérifier si la conversion a réussi et si le nombre est positif
+            printf("Code invalide. Veuillez entrer un nombre positif.\n");
+        }
+    } while (*endptr != '\0' || code <= 0);
+    return code;
 }
 
 int main() {
@@ -51,12 +110,9 @@ int main() {
                 // Créer un étudiant
                 char name[50], email[50];
                 int number, codep;
-                printf("Entrez le nom de l'étudiant : ");
-                scanf(" %[^\n]", name);
-                printf("Entrez le numéro de l'étudiant : ");
-                scanf("%d", &number);
-                printf("Entrez l'email de l'étudiant : ");
-                scanf(" %[^\n]", email);
+                number = validateStudentNumber();
+                validateName(name);
+                validateEmail(email);
                 printf("Entrez le code postal de l'étudiant : ");
                 scanf("%d", &codep);
                 students[numStudents++] = createStudent(name, number, email, codep);

@@ -1,2 +1,0 @@
-ma vie,perso,1,josh,0
-lautre vie,public,2,sony,0
