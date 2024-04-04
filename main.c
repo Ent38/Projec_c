@@ -113,7 +113,7 @@ int main() {
                 number = validateStudentNumber();
                 validateName(name);
                 validateEmail(email);
-                printf("Entrez le code postal de l'étudiant : ");
+                printf("Entrez le code permanant de l'étudiant : ");
                 scanf("%d", &codep);
                 students[numStudents++] = createStudent(name, number, email, codep);
                 printf("Étudiant créé avec succès.\n");
@@ -133,7 +133,7 @@ int main() {
                         scanf(" %[^\n]", name);
                         printf("Entrez le nouvel email de l'étudiant : ");
                         scanf(" %[^\n]", email);
-                        printf("Entrez le nouveau code postal de l'étudiant : ");
+                        printf("Entrez le nouveau code permanant de l'étudiant : ");
                         scanf("%d", &codep);
                         // Mettre à jour les informations de l'étudiant
                         editStudent(students, numStudents, number, name, email, codep);
@@ -150,6 +150,8 @@ int main() {
                 printf("Entrez le numéro de l'étudiant à supprimer : ");
                 scanf("%d", &number);
                 // Code pour supprimer l'étudiant
+                deleteStudent(students, number, &numStudents);
+                printf("Etudiant supprimé avec succès.\n");
                 break;
             }
             case 4: {
@@ -197,7 +199,8 @@ int main() {
                 int code;
                 printf("Entrez le code du livre à supprimer : ");
                 scanf("%d", &code);
-                // Code pour supprimer le livre
+                deleteBook(library, code, &numBooks);
+                printf("Livre supprimé avec succès.\n");
                 break;
             }
             case 7: {

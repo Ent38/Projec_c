@@ -9,6 +9,8 @@ struct Emprunt {
     int student_number;
     int book_code;
 };
+struct Student;
+struct Book;
 
 void createEmprunt(struct Emprunt* emprunts, int student_number, int book_code, int* numEmprunts);
 void deleteEmprunt(struct Emprunt* emprunts, int book_code, int* numEmprunts);

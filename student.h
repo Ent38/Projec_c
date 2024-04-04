@@ -20,5 +20,6 @@ void displayStudentList(struct Student* students, int numStudents, struct Emprun
 void saveStudentsToFile(struct Student* students, int numStudents);
 void loadStudentsFromFile(struct Student* students, int* numStudents);
 void editStudent(struct Student* students, int numStudents, int number, char name[], char email[], int codep);
+void deleteStudent(struct Student* students, int codep, int* numStudents);
 
 #endif // STUDENTS_H

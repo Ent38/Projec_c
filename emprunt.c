@@ -34,7 +34,9 @@ void displayEmprunts(struct Emprunt* emprunts, int numEmprunts, struct Student* 
         }
         // Affichage de l'emprunt
         if (student_found && book_found) {
-            printf("Étudiant : %s, Livre : %s (Auteur : %s)\n", student_name, book_name, book_author);
+            printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
+            printf("|   Étudiant : %s,   | Livre : %s      | (Auteur : %s)\n", student_name, book_name, book_author);
+            printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
         }
     }
 }

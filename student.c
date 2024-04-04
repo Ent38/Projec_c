@@ -45,7 +45,9 @@ void loadStudentsFromFile(struct Student* students, int* numStudents) {
 void displayStudentList(struct Student* students, int numStudents, struct Emprunt* emprunts, int numEmprunts, struct Book* library, int numBooks) {
     printf("Liste des étudiants :\n");
     for (int i = 0; i < numStudents; ++i) {
-        printf("Nom : %s, Numéro : %d, Email : %s, Code postal : %d\n", students[i].name, students[i].number, students[i].email, students[i].codep);
+        printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
+        printf("| Nom : %s,   | Numéro : %d,    | Email : %s,     |  Code permanant : %d\n", students[i].name, students[i].number, students[i].email, students[i].codep);
+        printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
         int emprunt_found = 0;
         for (int j = 0; j < numEmprunts; ++j) {
             if (emprunts[j].student_number == students[i].number) {
@@ -53,7 +55,9 @@ void displayStudentList(struct Student* students, int numStudents, struct Emprun
                 // Recherche du livre emprunté
                 for (int k = 0; k < numBooks; ++k) {
                     if (library[k].code == emprunts[j].book_code) {
-                        printf("  - Livre emprunté : %s\n", library[k].name);
+                        printf("|  - Livre emprunté : %s  |\n", library[k].name);
+                        printf("|--------------------------------------------------------------------------------------------------------------------------|");
+
                         break;
                     }
                 }
@@ -61,9 +65,6 @@ void displayStudentList(struct Student* students, int numStudents, struct Emprun
         }
         if (!emprunt_found) {
             printf("  - Aucun livre emprunté\n");
-        }
-        else{
-            printf("ici il faut le mon du livre");
         }
     }
 }
@@ -80,4 +81,19 @@ void editStudent(struct Student* students, int numStudents, int number, char nam
         }
     }
     printf("Étudiant non trouvé avec le numéro %d\n", number);
+}
+
+    // Fonction pour supprimer un eleve
+void deleteStudent(struct Student* students, int codep, int* numStudents) {
+    int i;
+    for (i = 0; i < *numStudents; ++i) {
+        if (students[i].codep == codep) {
+            // Supprimer l'etudiant en décalant les éléments suivants
+            for (int j = i; j < *numStudents - 1; ++j) {
+                students[j] = students[j + 1];
+            }
+            (*numStudents)--;
+            break;
+        }
+    }
 }

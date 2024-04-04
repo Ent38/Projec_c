@@ -75,7 +75,9 @@ void editBook(struct Book* library, int code, char name[], char category[], char
 void displayBookList(struct Book* library, int numBooks, struct Emprunt* emprunts, int numEmprunts, struct Student* students, int numStudents) {
     printf("Liste des livres :\n");
     for (int i = 0; i < numBooks; ++i) {
-        printf("Nom : %s, Catégorie : %s, Code : %d, Auteur : %s\n", library[i].name, library[i].category, library[i].code, library[i].author);
+        printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
+        printf("|   Nom : %s,    | Catégorie : %s,    | Code : %d,   |  Auteur : %s\n", library[i].name, library[i].category, library[i].code, library[i].author);
+        printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
         int emprunt_found = 0;
         for (int j = 0; j < numEmprunts; ++j) {
             if (emprunts[j].book_code == library[i].code) {
