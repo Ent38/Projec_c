@@ -14,6 +14,33 @@ struct Student createStudent(char name[], int number, char email[], int codep) {
     return new_student;
 }
 
+// Fonction pour sauvegarder les étudiants dans un fichier
+void saveStudentsToFile(struct Student* students, int numStudents) {
+    FILE* file = fopen("students.txt", "w");
+    if (file == NULL) {
+        printf("Erreur lors de l'ouverture du fichier pour sauvegarde des étudiants.\n");
+        return;
+    }
+    for (int i = 0; i < numStudents; ++i) {
+        fprintf(file, "%s,%d,%s,%d\n", students[i].name, students[i].number, students[i].email, students[i].codep);
+    }
+    fclose(file);
+}
+
+// Fonction pour charger les étudiants à partir d'un fichier
+void loadStudentsFromFile(struct Student* students, int* numStudents) {
+    FILE* file = fopen("students.txt", "r");
+    if (file == NULL) {
+        printf("Fichier d'étudiants introuvable. Créez-le en ajoutant des étudiants.\n");
+        return;
+    }
+    *numStudents = 0;
+    while (fscanf(file, "%[^,],%d,%[^,],%d\n", students[*numStudents].name, &students[*numStudents].number, students[*numStudents].email, &students[*numStudents].codep) == 4) {
+        (*numStudents)++;
+    }
+    fclose(file);
+}
+
 // Fonction pour afficher la liste des étudiants avec indication du livre emprunté
 void displayStudentList(struct Student* students, int numStudents, struct Emprunt* emprunts, int numEmprunts, struct Book* library, int numBooks) {
     printf("Liste des étudiants :\n");
@@ -41,3 +68,16 @@ void displayStudentList(struct Student* students, int numStudents, struct Emprun
     }
 }
 
+// Fonction pour modifier les informations d'un étudiant
+void editStudent(struct Student* students, int numStudents, int number, char name[], char email[], int codep) {
+    for (int i = 0; i < numStudents; ++i) {
+        if (students[i].number == number) {
+            strcpy(students[i].name, name);
+            strcpy(students[i].email, email);
+            students[i].codep = codep;
+            saveStudentsToFile(students, numStudents); // Sauvegarder les modifications dans le fichier
+            return;
+        }
+    }
+    printf("Étudiant non trouvé avec le numéro %d\n", number);
+}

@@ -1,6 +1,8 @@
-// emprunt.h
 #ifndef EMPRUNT_H
 #define EMPRUNT_H
+
+#include "student.h"
+#include "books.h"
 
 // Structure pour représenter un emprunt
 struct Emprunt {
@@ -8,13 +10,11 @@ struct Emprunt {
     int book_code;
 };
 
-// Fonction pour créer un nouvel emprunt
 void createEmprunt(struct Emprunt* emprunts, int student_number, int book_code, int* numEmprunts);
-
-// Fonction pour supprimer un emprunt
 void deleteEmprunt(struct Emprunt* emprunts, int book_code, int* numEmprunts);
-
-// Fonction pour mettre à jour un emprunt
 void updateEmprunt(struct Emprunt* emprunts, int book_code, int new_student_number, int* numEmprunts);
+void displayEmprunts(struct Emprunt* emprunts, int numEmprunts, struct Student* students, int numStudents, struct Book* library, int numBooks);
+void saveEmpruntsToFile(struct Emprunt* emprunts, int* numEmprunts);
+void loadEmpruntsFromFile(struct Emprunt* emprunts, int* numEmprunts);
 
 #endif // EMPRUNT_H

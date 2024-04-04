@@ -13,9 +13,11 @@ void displayMenu() {
     printf("5. Modifier un livre\n");
     printf("6. Supprimer un livre\n");
     printf("7. Créer un emprunt\n");
-    printf("8. Supprimer un emprunt\n");
-    printf("9. Afficher la liste des étudiants et des emprunts\n");
-    printf("10. Afficher la liste des livres\n");
+    printf("8. Modifier un emprunt\n");
+    printf("9. Supprimer un emprunt\n");
+    printf("10. Afficher la liste des étudiants \n");
+    printf("11. Afficher la liste des livres\n");
+    printf("12. Afficher la liste des emprunts\n");
     printf("0. Quitter\n");
 }
 
@@ -29,6 +31,11 @@ int main() {
 
     struct Emprunt emprunts[100];
     int numEmprunts = 0;
+
+    // Charger les données depuis les fichiers
+    loadStudentsFromFile(students, &numStudents);
+    loadBooksFromFile(library, &numBooks);
+    loadEmpruntsFromFile(emprunts, &numEmprunts);
 
     int choice;
     do {
@@ -61,9 +68,26 @@ int main() {
                 int number;
                 printf("Entrez le numéro de l'étudiant à modifier : ");
                 scanf("%d", &number);
-                // Code pour modifier l'étudiant
+                for (int i = 0; i < numStudents; i++) {
+                    if (students[i].number == number) {
+                        // Demander les nouvelles informations
+                        char name[50], email[50];
+                        int codep;
+                        printf("Entrez le nouveau nom de l'étudiant : ");
+                        scanf(" %[^\n]", name);
+                        printf("Entrez le nouvel email de l'étudiant : ");
+                        scanf(" %[^\n]", email);
+                        printf("Entrez le nouveau code postal de l'étudiant : ");
+                        scanf("%d", &codep);
+                        // Mettre à jour les informations de l'étudiant
+                        editStudent(students, numStudents, number, name, email, codep);
+                        printf("Étudiant modifié avec succès.\n");
+                        break;
+                    }
+                }
                 break;
             }
+
             case 3: {
                 // Supprimer un étudiant
                 int number;
@@ -93,9 +117,25 @@ int main() {
                 int code;
                 printf("Entrez le code du livre à modifier : ");
                 scanf("%d", &code);
-                // Code pour modifier le livre
+                for (int i = 0; i < numBooks; i++) {
+                    if (library[i].code == code) {
+                        // Demander les nouvelles informations
+                        char name[50], category[50], author[50];
+                        printf("Entrez le nouveau nom du livre : ");
+                        scanf(" %[^\n]", name);
+                        printf("Entrez la nouvelle catégorie du livre : ");
+                        scanf(" %[^\n]", category);
+                        printf("Entrez le nouvel auteur du livre : ");
+                        scanf(" %[^\n]", author);
+                        // Mettre à jour les informations du livre
+                        editBook(library, code, name, category, author, &numBooks);
+                        printf("Livre modifié avec succès.\n");
+                        break;
+                    }
+                }
                 break;
             }
+
             case 6: {
                 // Supprimer un livre
                 int code;
@@ -111,11 +151,46 @@ int main() {
                 scanf("%d", &student_number);
                 printf("Entrez le code du livre : ");
                 scanf("%d", &book_code);
-                createEmprunt(emprunts, student_number, book_code, &numEmprunts);
-                printf("Emprunt créé avec succès.\n");
+                
+                // Vérifier si le livre est déjà emprunté
+                int isBookRented = 0;
+                for (int i = 0; i < numEmprunts; i++) {
+                    if (emprunts[i].book_code == book_code) {
+                        isBookRented = 1;
+                        break;
+                    }
+                }
+                
+                if (isBookRented) {
+                    printf("Ce livre est déjà emprunté et ne peut pas être emprunté de nouveau.\n");
+                } else {
+                    createEmprunt(emprunts, student_number, book_code, &numEmprunts);
+                    printf("Emprunt créé avec succès.\n");
+                }
                 break;
             }
+
             case 8: {
+                // Modifier un emprunt
+                int book_code;
+                printf("Entrez le code du livre de l'emprunt à modifier : ");
+                scanf("%d", &book_code);
+                for (int i = 0; i < numEmprunts; i++) {
+                    if (emprunts[i].book_code == book_code) {
+                        // Demander les nouvelles informations
+                        int new_student_number;
+                        printf("Entrez le nouveau numéro de l'étudiant pour cet emprunt : ");
+                        scanf("%d", &new_student_number);
+                        // Mettre à jour les informations de l'emprunt
+                        updateEmprunt(emprunts, book_code, new_student_number, &numEmprunts);
+                        printf("Emprunt modifié avec succès.\n");
+                        break;
+                    }
+                }
+                break;
+            }
+
+            case 9: {
                 // Supprimer un emprunt
                 int book_code;
                 printf("Entrez le code du livre à rendre : ");
@@ -124,17 +199,25 @@ int main() {
                 printf("Emprunt supprimé avec succès.\n");
                 break;
             }
-            case 9:
-                // Afficher la liste des étudiants et des emprunts
-                displayStudentList(students, numStudents, emprunts, numEmprunts);
-                break;
             case 10:
+                // Afficher la liste des étudiants 
+                displayStudentList(students, numStudents, emprunts, numEmprunts, library, numBooks );
+                break;
+            case 11:
                 // Afficher la liste des livres
                 displayBookList(library, numBooks, emprunts, numEmprunts,students, numStudents );
+                break;
+            // Afficher la liste des emprunts
+            case 12:
+                displayEmprunts(emprunts, numEmprunts, students, numStudents, library, numBooks);
                 break;
             case 0:
                 // Quitter le programme
                 printf("Au revoir !\n");
+                // Sauvegarder les données dans les fichiers
+                saveStudentsToFile(students, numStudents);
+                saveBooksToFile(library, numBooks);
+                saveEmpruntsToFile(emprunts, &numEmprunts);
                 break;
             default:
                 printf("Choix invalide. Veuillez choisir une option valide.\n");

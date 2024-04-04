@@ -13,6 +13,33 @@ struct Book createBook(char name[], char category[], int code, char author[]) {
     return new_book;
 }
 
+// Fonction pour sauvegarder les livres dans un fichier
+void saveBooksToFile(struct Book* library, int numBooks) {
+    FILE* file = fopen("books.txt", "w");
+    if (file == NULL) {
+        printf("Erreur lors de l'ouverture du fichier pour sauvegarde des livres.\n");
+        return;
+    }
+    for (int i = 0; i < numBooks; ++i) {
+        fprintf(file, "%s,%s,%d,%s,%d\n", library[i].name, library[i].category, library[i].code, library[i].author, library[i].rented);
+    }
+    fclose(file);
+}
+
+// Fonction pour charger les livres à partir d'un fichier
+void loadBooksFromFile(struct Book* library, int* numBooks) {
+    FILE* file = fopen("books.txt", "r");
+    if (file == NULL) {
+        printf("Fichier de livres introuvable. Créez-le en ajoutant des livres.\n");
+        return;
+    }
+    *numBooks = 0;
+    while (fscanf(file, "%[^,],%[^,],%d,%[^,],%d\n", library[*numBooks].name, library[*numBooks].category, &library[*numBooks].code, library[*numBooks].author, &library[*numBooks].rented) == 5) {
+        (*numBooks)++;
+    }
+    fclose(file);
+}
+
 // Fonction pour supprimer un livre
 void deleteBook(struct Book* library, int code, int* numBooks) {
     int i;
@@ -26,6 +53,7 @@ void deleteBook(struct Book* library, int code, int* numBooks) {
             break;
         }
     }
+    saveBooksToFile(library, *numBooks); // Sauvegarder les modifications dans le fichier
 }
 
 // Fonction pour modifier les détails d'un livre
@@ -40,6 +68,7 @@ void editBook(struct Book* library, int code, char name[], char category[], char
             break;
         }
     }
+    saveBooksToFile(library, *numBooks); // Sauvegarder les modifications dans le fichier
 }
 
 // Fonction pour afficher la liste des livres avec indication de l'emprunt ou non

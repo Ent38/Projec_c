@@ -1,7 +1,12 @@
 #ifndef BOOKS_H
 #define BOOKS_H
 
-#include "emprunt.h"  // Assurez-vous d'inclure le fichier d'en-tête emprunt.h
+#include "student.h"  // Inclure student.h avant la déclaration de struct Book
+
+// Déclaration avancée de la structure Emprunt
+struct Emprunt;
+
+// Déclaration complète de la structure Student
 struct Student;
 
 struct Book {
@@ -12,10 +17,15 @@ struct Book {
     int rented; // 1 si emprunté, 0 sinon
 };
 
-
 struct Book createBook(char name[], char category[], int code, char author[]);
 void deleteBook(struct Book* library, int code, int* numBooks);
 void editBook(struct Book* library, int code, char name[], char category[], char author[], int* numBooks);
 void displayBookList(struct Book* library, int numBooks, struct Emprunt* emprunts, int numEmprunts, struct Student* students, int numStudents);
+
+// Fonction pour sauvegarder les livres dans un fichier
+void saveBooksToFile(struct Book* library, int numBooks);
+
+// Fonction pour charger les livres à partir d'un fichier
+void loadBooksFromFile(struct Book* library, int* numBooks);
 
 #endif // BOOKS_H

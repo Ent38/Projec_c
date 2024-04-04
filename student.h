@@ -1,10 +1,12 @@
-// student.h
-#ifndef STUDENT_H
-#define STUDENT_H
+#ifndef STUDENTS_H
+#define STUDENTS_H
 
 #include "emprunt.h"
 
 struct Book;
+
+struct Emprunt;
+
 // Structure pour représenter un étudiant
 struct Student {
     char name[50];
@@ -13,10 +15,10 @@ struct Student {
     int codep;
 };
 
-// Fonction pour créer un nouvel étudiant
 struct Student createStudent(char name[], int number, char email[], int codep);
-
-// Fonction pour afficher la liste des étudiants avec indication de l'emprunt ou non d'un livre
 void displayStudentList(struct Student* students, int numStudents, struct Emprunt* emprunts, int numEmprunts, struct Book* library, int numBooks);
+void saveStudentsToFile(struct Student* students, int numStudents);
+void loadStudentsFromFile(struct Student* students, int* numStudents);
+void editStudent(struct Student* students, int numStudents, int number, char name[], char email[], int codep);
 
-#endif // STUDENT_H
+#endif // STUDENTS_H
