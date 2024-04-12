@@ -15,7 +15,7 @@ struct Book createBook(char name[], char category[], int code, char author[]) {
 
 // Fonction pour sauvegarder les livres dans un fichier
 void saveBooksToFile(struct Book* library, int numBooks) {
-    FILE* file = fopen("books.txt", "w");
+    FILE* file = fopen("books/books.txt", "w");
     if (file == NULL) {
         printf("Erreur lors de l'ouverture du fichier pour sauvegarde des livres.\n");
         return;
@@ -28,7 +28,7 @@ void saveBooksToFile(struct Book* library, int numBooks) {
 
 // Fonction pour charger les livres à partir d'un fichier
 void loadBooksFromFile(struct Book* library, int* numBooks) {
-    FILE* file = fopen("books.txt", "r");
+    FILE* file = fopen("books/books.txt", "r");
     if (file == NULL) {
         printf("Fichier de livres introuvable. Créez-le en ajoutant des livres.\n");
         return;
@@ -96,4 +96,14 @@ void displayBookList(struct Book* library, int numBooks, struct Emprunt* emprunt
             printf("  - Ce livre est disponible\n");
         }
     }
+}
+
+// Fonction pour rechercher un livre par code
+struct Book *searchBookByCode(struct Book library[], int numBooks, int code) {
+    for (int i = 0; i < numBooks; i++) {
+        if (library[i].code == code) {
+            return &library[i]; // Retourne un pointeur vers le livre trouvé
+        }
+    }
+    return NULL; // Si aucun livre avec le code donné n'est trouvé, retourne NULL
 }

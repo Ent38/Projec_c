@@ -1,6 +1,6 @@
 #include "student.h"
-#include "emprunt.h"
-#include "books.h" // Assurez-vous d'inclure le fichier d'en-tête books.h
+#include "../emprunt/emprunt.h"
+#include "../books/books.h" // Assurez-vous d'inclure le fichier d'en-tête books.h
 #include <stdio.h>
 #include <string.h>
 
@@ -16,7 +16,7 @@ struct Student createStudent(char name[], int number, char email[], int codep) {
 
 // Fonction pour sauvegarder les étudiants dans un fichier
 void saveStudentsToFile(struct Student* students, int numStudents) {
-    FILE* file = fopen("students.txt", "w");
+    FILE* file = fopen("student/students.txt", "w");
     if (file == NULL) {
         printf("Erreur lors de l'ouverture du fichier pour sauvegarde des étudiants.\n");
         return;
@@ -29,7 +29,7 @@ void saveStudentsToFile(struct Student* students, int numStudents) {
 
 // Fonction pour charger les étudiants à partir d'un fichier
 void loadStudentsFromFile(struct Student* students, int* numStudents) {
-    FILE* file = fopen("students.txt", "r");
+    FILE* file = fopen("student/students.txt", "r");
     if (file == NULL) {
         printf("Fichier d'étudiants introuvable. Créez-le en ajoutant des étudiants.\n");
         return;
@@ -96,4 +96,14 @@ void deleteStudent(struct Student* students, int codep, int* numStudents) {
             break;
         }
     }
+}
+
+// Fonction pour rechercher un étudiant par numéro
+struct Student *searchStudentByNumber(struct Student students[], int numStudents, int number) {
+    for (int i = 0; i < numStudents; i++) {
+        if (students[i].number == number) {
+            return &students[i]; // Retourne un pointeur vers l'étudiant trouvé
+        }
+    }
+    return NULL; // Si aucun étudiant avec le numéro donné n'est trouvé, retourne NULL
 }

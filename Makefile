@@ -4,7 +4,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
 # Liste des fichiers source
-SRCS = main.c student.c books.c emprunt.c
+SRCS = main.c student/student.c books/books.c emprunt/emprunt.c
 
 # Liste des fichiers objets correspondants
 OBJS = $(SRCS:.c=.o)
