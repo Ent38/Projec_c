@@ -45,7 +45,7 @@ int main() {
         switch (choice) {
             case 1:
                 // Accéder au menu pour gérer les étudiants
-                studentMenu(students, &numStudents,library, numBooks,emprunts, numEmprunts);
+                studentMenu(students, &numStudents, library, numBooks, emprunts, &numEmprunts);
                 break;
             case 2:
                 // Accéder au menu pour gérer les livres

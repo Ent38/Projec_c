@@ -18,7 +18,6 @@ void empruntMenu(struct Emprunt *emprunts, int *numEmprunts, struct Student *stu
         displayEmpruntMenu();
         printf("Choisissez une option : ");
         scanf("%d", &choice);
-
         switch (choice) {
             case 1: {
                 // Créer un emprunt
@@ -40,16 +39,12 @@ void empruntMenu(struct Emprunt *emprunts, int *numEmprunts, struct Student *stu
                 scanf("%d", &book_code);
                 for (int i = 0; i < *numEmprunts; i++) {
                     if (emprunts[i].book_code == book_code) {
-                        int new_student_number;
-                        printf("Entrez le nouveau numéro de l'étudiant pour cet emprunt : ");
-                        scanf("%d", &new_student_number);
+                        printf("Entrez la nouvelle date d'emprunt (JJ/MM/AAAA) : ");
+                        scanf("%s", emprunts[i].emprunt_date_str);
 
-                        // Obtenir la date et l'heure actuelles pour la mise à jour de l'emprunt
-                        time_t current_time;
-                        time(&current_time);
+                        printf("Entrez la nouvelle date de retour (JJ/MM/AAAA) : ");
+                        scanf("%s",  emprunts[i].return_date_str);
 
-                        // Mettre à jour l'emprunt avec les nouvelles informations et la date actuelle
-                        updateEmprunt(emprunts, book_code, new_student_number, current_time, emprunts[i].return_date, numEmprunts);
                         printf("Emprunt modifié avec succès.\n");
                         break;
                     }
@@ -69,19 +64,16 @@ void empruntMenu(struct Emprunt *emprunts, int *numEmprunts, struct Student *stu
                 // Afficher la liste des emprunts
                 displayEmprunts(emprunts, *numEmprunts, students, numStudents, library, numBooks);
                 break;
-            }
+            }  
             case 5: {
                 // Rechercher un emprunt par le code du livre
                 int book_code, found = 0;
                 printf("Entrez le code du livre : ");
                 scanf("%d", &book_code);
-                for (int i = 0; i < *numEmprunts; i++) {
+                for (int i = 0; i < *numEmprunts; ++i) {
                     if (emprunts[i].book_code == book_code) {
-                        printf("Emprunt trouvé :\n");
-                        printf("Nom de l'étudiant : %s\n", students[emprunts[i].student_number].name);
-                        printf("Nom du livre : %s\n", library[emprunts[i].book_code].name);
-                        printf("Date d'emprunt : %s", ctime(&emprunts[i].emprunt_date));
-                        printf("Date de retour : %s", ctime(&emprunts[i].return_date));
+                        printf("Emprunt trouvé : \n");
+                        printf("Nom de l'étudiant : %s   | Nom du livre : %s  | Date d'emprunt : %s  | Date de retour : %s  | \n", students[emprunts[i-1].student_number].name, library[emprunts[i-1].book_code].name, emprunts[i].emprunt_date_str, emprunts[i].return_date_str);
                         found = 1;
                         break;
                     }
@@ -89,6 +81,7 @@ void empruntMenu(struct Emprunt *emprunts, int *numEmprunts, struct Student *stu
                 if (!found) {
                     printf("Emprunt non trouvé.\n");
                 }
+
                 break;
             }
             case 0:

@@ -56,8 +56,7 @@ void validateEmail(char *email) {
     } while (strchr(email, '@') == NULL || strchr(email, '.') == NULL || strchr(email, '@') >= strchr(email, '.'));
 }
 
-void studentMenu(struct Student *students, int *numStudents,struct Book * library, int numBooks,struct Emprunt *emprunts, int numEmprunts ) {
-    
+void studentMenu(struct Student *students, int *numStudents,struct Book * library, int numBooks,struct Emprunt *emprunts, int *numEmprunts ) {
     int choice;
     do {
         displayStudentMenu();
@@ -112,15 +111,26 @@ void studentMenu(struct Student *students, int *numStudents,struct Book * librar
             }
             case 4:
                 // Afficher la liste des étudiants
-                displayStudentList(students, *numStudents, emprunts, numEmprunts, library, numBooks );
+                displayStudentList(students, *numStudents, emprunts, *numEmprunts, library, numBooks );
                 break;
             case 5: {
+                // Rechercher un étudiant par son numéro
                 // Rechercher un étudiant par son numéro
                 int number;
                 printf("Entrez le numéro de l'étudiant : ");
                 scanf("%d", &number);
-                searchStudentByNumber(students, *numStudents, number);
+                struct Student *foundStudent = searchStudentByNumber(students, *numStudents, number);
+                if (foundStudent != NULL) {
+                    printf("Informations de l'étudiant :\n");
+                    printf("Nom : %s\n", foundStudent->name);
+                    printf("Numéro : %d\n", foundStudent->number);
+                    printf("Email : %s\n", foundStudent->email);
+                    printf("Code permanent : %d\n", foundStudent->codep);
+                } else {
+                    printf("Aucun étudiant trouvé avec le numéro %d\n", number);
+                }
                 break;
+
             }
             case 0:
                 // Revenir au menu principal

@@ -46,28 +46,31 @@ void displayStudentList(struct Student* students, int numStudents, struct Emprun
     printf("Liste des étudiants :\n");
     for (int i = 0; i < numStudents; ++i) {
         printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
-        printf("| Nom : %s,   | Numéro : %d,    | Email : %s,     |  Code permanant : %d\n", students[i].name, students[i].number, students[i].email, students[i].codep);
+        printf("| Nom : %s,   | Numéro : %d,    | Email : %s,     |  Code permanent : %d\n", students[i].name, students[i].number, students[i].email, students[i].codep);
         printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
         int emprunt_found = 0;
-        for (int j = 0; j < numEmprunts; ++j) {
+        for (int j = 0; j < numEmprunts; j++) {
             if (emprunts[j].student_number == students[i].number) {
                 emprunt_found = 1;
                 // Recherche du livre emprunté
-                for (int k = 0; k < numBooks; ++k) {
+                int k = 0;
+                while (k < numBooks) {
                     if (library[k].code == emprunts[j].book_code) {
-                        printf("|  - Livre emprunté : %s  |\n", library[k].name);
+                        printf("|  - Livre emprunté : %s  | \n", library[k].name);
                         printf("|--------------------------------------------------------------------------------------------------------------------------|");
-
-                        break;
+                        break; // Sortir de la boucle interne dès qu'un emprunt est trouvé
                     }
+                    k++;
                 }
             }
         }
         if (!emprunt_found) {
-            printf("  - Aucun livre emprunté\n");
+            printf("|  - Aucun livre emprunté  |\n");
+            printf("|--------------------------------------------------------------------------------------------------------------------------|");
         }
     }
 }
+
 
 // Fonction pour modifier les informations d'un étudiant
 void editStudent(struct Student* students, int numStudents, int number, char name[], char email[], int codep) {
