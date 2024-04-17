@@ -5,5 +5,8 @@
         "books.h": "c",
         "student.h": "c",
         "accctrl.h": "c"
-    }
+    },
+    "cmake.configureOnOpen": false,
+    "files.autoSave": "onFocusChange",
+    "editor.wordWrap": "on"
 }

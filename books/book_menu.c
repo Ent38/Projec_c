@@ -84,10 +84,7 @@ void booksMenu(struct Book *library, int *numBooks,struct Student *students, int
                     printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
                         printf("Livre trouvé :\n");
                         printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
-                        printf("Nom : %s  ", library[i].name);
-                        printf("  Catégorie : %s  ", library[i].category);
-                        printf("  Code : %d   ", library[i].code);
-                        printf("  Auteur : %s  ", library[i].author);
+                        printf("| Nom : %s   |  Catégorie : %s    |    Code : %d   |     Auteur : %s    |   \n", library[i].name, library[i].category, library[i].code, library[i].author);
                         printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
 
                         found = 1;

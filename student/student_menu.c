@@ -121,11 +121,11 @@ void studentMenu(struct Student *students, int *numStudents,struct Book * librar
                 scanf("%d", &number);
                 struct Student *foundStudent = searchStudentByNumber(students, *numStudents, number);
                 if (foundStudent != NULL) {
-                    printf("Informations de l'étudiant :\n");
-                    printf("Nom : %s\n", foundStudent->name);
-                    printf("Numéro : %d\n", foundStudent->number);
-                    printf("Email : %s\n", foundStudent->email);
-                    printf("Code permanent : %d\n", foundStudent->codep);
+                    printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
+                    printf("| Informations de l'étudiant :\n");
+                    printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
+                    printf("|  Nom : %s |  Numéro : %d   |  Email : %s   |   Code permanent : %d   |\n", foundStudent->name,foundStudent->number,foundStudent->email,foundStudent->codep);
+                    printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
                 } else {
                     printf("Aucun étudiant trouvé avec le numéro %d\n", number);
                 }

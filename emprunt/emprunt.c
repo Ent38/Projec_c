@@ -114,7 +114,7 @@ struct Emprunt *searchEmpruntByBookCode(struct Emprunt emprunts[], int numEmprun
 // Fonction pour supprimer un emprunt
 void deleteEmprunt(struct Emprunt* emprunts, int book_code, int* numEmprunts) {
     int i;
-    for (i = 0; i < *numEmprunts; ++i) {
+    for (i = 0; i < *numEmprunts; ++i) { 
         if (emprunts[i].book_code == book_code) {
             // Supprimer l'emprunt en décalant les éléments suivants
             for (int j = i; j < *numEmprunts - 1; ++j) {

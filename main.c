@@ -4,9 +4,9 @@
 #include "student/student.h"
 #include "books/books.h"
 #include "emprunt/emprunt.h"
-#include "student/student_menu.c"
-#include "books/book_menu.c"
-#include "emprunt/emprunt_menu.c"
+#include "student/student_menu.h"
+#include "books/book_menu.h"
+#include "emprunt/emprunt_menu.h"
 
 // Fonction pour afficher le menu principal
 void displayMainMenu() {

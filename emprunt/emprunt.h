@@ -26,3 +26,4 @@ struct Emprunt *searchEmpruntByBookCode(struct Emprunt emprunts[], int numEmprun
 void loadEmpruntsFromFile(struct Emprunt* emprunts, int* numEmprunts);
 
 #endif // EMPRUNT_H
+ 

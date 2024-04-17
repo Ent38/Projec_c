@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "emprunt.h"
+#include "emprunt_menu.h"
 
 void displayEmpruntMenu() {
     printf("\nMenu Emprunt :\n");
@@ -9,7 +10,7 @@ void displayEmpruntMenu() {
     printf("3. Supprimer un emprunt\n");
     printf("4. Afficher la liste des emprunts\n");
     printf("5. Rechercher un emprunt par le code du livre\n");
-    printf("0. Revenir au menu principal\n");
+    printf("0. Revenir au menu principal\n"); 
 }
 
 void empruntMenu(struct Emprunt *emprunts, int *numEmprunts, struct Student *students, int numStudents, struct Book *library, int numBooks) {
@@ -17,7 +18,7 @@ void empruntMenu(struct Emprunt *emprunts, int *numEmprunts, struct Student *stu
     do {
         displayEmpruntMenu();
         printf("Choisissez une option : ");
-        scanf("%d", &choice);
+        scanf("%d", &choice); 
         switch (choice) {
             case 1: {
                 // Créer un emprunt
@@ -32,7 +33,7 @@ void empruntMenu(struct Emprunt *emprunts, int *numEmprunts, struct Student *stu
                 printf("Emprunt créé avec succès.\n");
                 break;
             }
-            case 2: {
+            case 2: { 
                 // Modifier un emprunt
                 int book_code;
                 printf("Entrez le code du livre de l'emprunt à modifier : ");
@@ -72,8 +73,11 @@ void empruntMenu(struct Emprunt *emprunts, int *numEmprunts, struct Student *stu
                 scanf("%d", &book_code);
                 for (int i = 0; i < *numEmprunts; ++i) {
                     if (emprunts[i].book_code == book_code) {
-                        printf("Emprunt trouvé : \n");
-                        printf("Nom de l'étudiant : %s   | Nom du livre : %s  | Date d'emprunt : %s  | Date de retour : %s  | \n", students[emprunts[i-1].student_number].name, library[emprunts[i-1].book_code].name, emprunts[i].emprunt_date_str, emprunts[i].return_date_str);
+                    printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
+                        printf("| Emprunt trouvé : \n");
+                        printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
+                        printf("| Nom de l'étudiant : %s   | Nom du livre : %s  | Date d'emprunt : %s  | Date de retour : %s  | \n", students[emprunts[i-1].student_number].name, library[emprunts[i-1].book_code].name, emprunts[i].emprunt_date_str, emprunts[i].return_date_str);
+                        printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
                         found = 1;
                         break;
                     }
@@ -89,6 +93,6 @@ void empruntMenu(struct Emprunt *emprunts, int *numEmprunts, struct Student *stu
                 break;
             default:
                 printf("Choix invalide. Veuillez choisir une option valide.\n");
-        }
+        } 
     } while (choice != 0);
 }
