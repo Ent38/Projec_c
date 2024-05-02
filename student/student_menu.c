@@ -56,7 +56,7 @@ void validateEmail(char *email) {
     } while (strchr(email, '@') == NULL || strchr(email, '.') == NULL || strchr(email, '@') >= strchr(email, '.'));
 }
 
-void studentMenu(struct Student *students, int *numStudents,struct Book * library, int numBooks,struct Emprunt *emprunts, int *numEmprunts ) {
+void studentMenu(struct Student*students, int *numStudents ,struct Book * library, int numBooks,struct Emprunt *emprunts, int *numEmprunts ) {
     int choice;
     do {
         displayStudentMenu();
@@ -67,13 +67,14 @@ void studentMenu(struct Student *students, int *numStudents,struct Book * librar
             case 1: {
                 // Créer un étudiant
                 char name[50], email[50];
-                int number, codep;
+                int codep,number;
                 number = validateStudentNumber();
                 validateName(name);
                 validateEmail(email);
                 printf("Entrez le code permanant de l'étudiant : ");
                 scanf("%d", &codep);
-                students[*numStudents++] = createStudent(name, number, email, codep);
+                students[*numStudents] = *createStudent(&students,numStudents,name,number,email,codep);
+                (*numStudents)++;
                 printf("Étudiant créé avec succès.\n");
                 break;
             }
@@ -105,13 +106,13 @@ void studentMenu(struct Student *students, int *numStudents,struct Book * librar
                 int number;
                 printf("Entrez le numéro de l'étudiant à supprimer : ");
                 scanf("%d", &number);
-                deleteStudent(students, number, numStudents);
+                deleteStudent(&students, number, numStudents);
                 printf("Etudiant supprimé avec succès.\n");
                 break;
             }
             case 4:
                 // Afficher la liste des étudiants
-                displayStudentList(students, *numStudents, emprunts, *numEmprunts, library, numBooks );
+                displayStudentList(students, *numStudents, emprunts, *numEmprunts ,library, numBooks);
                 break;
             case 5: {
                 // Rechercher un étudiant par son numéro

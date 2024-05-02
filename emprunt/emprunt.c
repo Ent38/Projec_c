@@ -1,139 +1,217 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include <time.h> // Ajout de la bibliothèque pour la gestion du temps
+#include <time.h>
 #include "emprunt.h"
 #include "../student/student.h"
 #include "../books/books.h"
+#define MAX_DATE_LENGTH 20
 
-// Fonction pour afficher tous les emprunts
-void displayEmprunts(struct Emprunt* emprunts, int numEmprunts, struct Student* students, int numStudents, struct Book* library, int numBooks) {
+#define EMPRUNTS_FILE "emprunt/emprunts.txt"
+
+void displayEmprunts(struct Emprunt* emprunts, int numEmprunts) {
     printf("Liste des emprunts :\n");
     for (int i = 0; i < numEmprunts; ++i) {
-        int student_number = emprunts[i].student_number;
-        int book_code = emprunts[i].book_code;
-        
-        // Recherche de l'étudiant correspondant
-        char student_name[50];
-        int student_found = 0;
-        for (int j = 0; j < numStudents; ++j) {
-            if (students[j].number == student_number) {
-                strcpy(student_name, students[j].name);
-                student_found = 1;
-                break;
-            }
-        }
-        
-        // Recherche du livre correspondant
-        char book_name[50];
-        char book_author[50];
-        int book_found = 0;
-        for (int k = 0; k < numBooks; ++k) {
-            if (library[k].code == book_code) {
-                strcpy(book_name, library[k].name);
-                strcpy(book_author, library[k].author);
-                book_found = 1;
-                break;
-            }
-        }
 
         // Affichage de l'emprunt avec la date d'emprunt et la date de retour
-        if (student_found && book_found) {
-            printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
-            printf("|   Étudiant : %s,   | Livre : %s      | (Auteur : %s) | Date d'emprunt : %s | Date de retour : %s\n", student_name, book_name, book_author,
-                emprunts[i].emprunt_date_str, emprunts[i].return_date_str);
-            printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
-        }
+        printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
+        printf("|   Étudiant : %s   | Livre : %s      | Date d'emprunt : %s | Date de retour : %s\n", emprunts[i].student_name, emprunts[i].book_name, emprunts[i].emprunt_date_str, emprunts[i].return_date_str);
+        printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
     }
 }
 
-// Fonction pour créer un nouvel emprunt
-void createEmprunt(struct Emprunt* emprunts, int student_number, int book_code, int* numEmprunts) {
-    // Demander la date d'emprunt à l'utilisateur
-    printf("Entrez la date d'emprunt (JJ/MM/AAAA) : ");
-    char emprunt_date_str[20];
-    scanf("%s", emprunt_date_str);
 
-    // Demander la date de retour à l'utilisateur
-    printf("Entrez la date de retour (JJ/MM/AAAA) : ");
-    char return_date_str[20];
-    scanf("%s", return_date_str);
-
-    emprunts[*numEmprunts].student_number = student_number;
-    emprunts[*numEmprunts].book_code = book_code;
-    strcpy(emprunts[*numEmprunts].emprunt_date_str, emprunt_date_str); // Stockez la date d'emprunt en tant que chaîne de caractères
-    strcpy(emprunts[*numEmprunts].return_date_str, return_date_str);   // Stockez la date de retour en tant que chaîne de caractères
-
-    (*numEmprunts)++;
-}
-
-
-// Fonction pour sauvegarder les emprunts dans un fichier
-void saveEmpruntsToFile(struct Emprunt *emprunts, int *numEmprunts)
-{
-    FILE *file = fopen("emprunt/emprunts.txt", "w");
-    if (file == NULL)
-    {
-        perror("Erreur lors de l'ouverture du fichier emprunts.txt");
-        return;
+struct Emprunt* createEmprunt(struct Emprunt** emprunts, int* numEmprunts, char student_name[], char book_name[], char return_date_str[], char emprunt_date_str[]) {
+    // Allouer de la mémoire pour le nouvel emprunt
+    struct Emprunt* new_emprunt = (struct Emprunt*)malloc(sizeof(struct Emprunt));
+    if (new_emprunt == NULL) {
+        printf("Erreur: Impossible d'allouer de la mémoire pour le nouvel emprunt.\n");
+        return NULL;
     }
 
-    for (int i = 0; i < *numEmprunts; ++i)
-    { 
-        fprintf(file, "%d %d %s %s\n", emprunts[i].student_number, emprunts[i].book_code, emprunts[i].emprunt_date_str, emprunts[i].return_date_str);
-    }
+    // Copier les informations de l'emprunt
+    strcpy(new_emprunt->student_name, student_name);
+    strcpy(new_emprunt->book_name, book_name);
+    strcpy(new_emprunt->return_date_str, return_date_str);
+    strcpy(new_emprunt->emprunt_date_str, emprunt_date_str);
 
-    fclose(file);
+    // Ajouter le nouvel emprunt à la liste
+    *numEmprunts += 1;
+    *emprunts = realloc(*emprunts, (*numEmprunts) * sizeof(struct Emprunt*));
+    if (*emprunts == NULL) {
+        printf("Erreur: Impossible de réallouer de la mémoire pour la liste d'emprunts.\n");
+        free(new_emprunt); // Libérer la mémoire allouée pour le nouvel emprunt
+        return NULL;
+    }
+    (*emprunts)[(*numEmprunts) - 1] = *new_emprunt;
+
+    // Sauvegarder la liste mise à jour dans le fichier
+    saveEmpruntsToFile(*emprunts, *numEmprunts);
+
+    return new_emprunt;
 }
 
-// Fonction pour charger les emprunts à partir d'un fichier
-void loadEmpruntsFromFile(struct Emprunt* emprunts, int* numEmprunts) {
-    FILE *file = fopen("emprunt/emprunts.txt", "r");
+void saveEmpruntsToFile(struct Emprunt* emprunts, int numEmprunts) {
+    FILE* file = fopen(EMPRUNTS_FILE, "w");
     if (file == NULL) {
-        perror("Erreur lors de l'ouverture du fichier emprunts.txt");
+        printf("Erreur lors de l'ouverture du fichier %s pour sauvegarde des emprunts.\n", EMPRUNTS_FILE);
         return;
     }
-    *numEmprunts = 0;
-    while (fscanf(file, "%d %d %s %s", &emprunts[*numEmprunts].student_number, &emprunts[*numEmprunts].book_code,
-            emprunts[*numEmprunts].emprunt_date_str, emprunts[*numEmprunts].return_date_str) == 4) {
-        (*numEmprunts)++;
+    for (int i = 0; i < numEmprunts; ++i) {
+        fprintf(file, "%s %s %s %s \n", emprunts[i].student_name, emprunts[i].book_name, emprunts[i].emprunt_date_str, emprunts[i].return_date_str);
     }
     fclose(file);
 }
 
-// Fonction pour rechercher un emprunt par code de livre
-struct Emprunt *searchEmpruntByBookCode(struct Emprunt emprunts[], int numEmprunts, int book_code) {
-    for (int i = 0; i < numEmprunts; i++) {
-        if (emprunts[i].book_code == book_code) {
-            return &emprunts[i]; // Retourne un pointeur vers l'emprunt trouvé
-        }
+void loadEmpruntsFromFile(struct Emprunt** emprunts, int* numEmprunts) {
+    FILE* file = fopen(EMPRUNTS_FILE, "r");
+    if (file == NULL) {
+        printf("Fichier d'emprunts introuvable. Créez-le en ajoutant des emprunts.\n");
+        return;
     }
-    return NULL; // Si aucun emprunt avec le code de livre donné n'est trouvé, retourne NULL
-}
 
+    *numEmprunts = 0;
+    *emprunts = NULL;
 
-// Fonction pour supprimer un emprunt
-void deleteEmprunt(struct Emprunt* emprunts, int book_code, int* numEmprunts) {
-    int i;
-    for (i = 0; i < *numEmprunts; ++i) { 
-        if (emprunts[i].book_code == book_code) {
-            // Supprimer l'emprunt en décalant les éléments suivants
-            for (int j = i; j < *numEmprunts - 1; ++j) {
-                emprunts[j] = emprunts[j + 1];
-            }
-            (*numEmprunts)--;
+    while (1) {
+        // Allouer de la mémoire pour un nouvel emprunt
+        *emprunts = realloc(*emprunts, (*numEmprunts + 1) * sizeof(struct Emprunt));
+        if (*emprunts == NULL) {
+            printf("Erreur lors de la réallocation de mémoire.\n");
+            fclose(file);
+            return;
+        }
+
+        // Lire les informations de l'emprunt depuis le fichier
+        if (fscanf(file, "%s %s %s %s \n", (*emprunts)[*numEmprunts].student_name, (*emprunts)[*numEmprunts].book_name,(*emprunts)[*numEmprunts].emprunt_date_str, (*emprunts)[*numEmprunts].return_date_str) == 4) {
+
+            (*numEmprunts)++;
+        } else {
+            // Si la lecture échoue, sortir de la boucle
             break;
         }
     }
+    
+    fclose(file);
 }
 
-// Fonction pour mettre à jour un emprunt
-void updateEmprunt(struct Emprunt* emprunts, int book_code, int new_student_number, int* numEmprunts) {
+void deleteEmprunt(struct Emprunt** emprunts, char book_name[], int* numEmprunts) {
+    // Recherche de l'emprunt par le nom du livre
+    int indexToDelete = -1;
     for (int i = 0; i < *numEmprunts; ++i) {
-        if (emprunts[i].book_code == book_code) {
-            // Mettre à jour les informations de l'emprunt
-            emprunts[i].student_number = new_student_number;
-
+        if (strcmp((*emprunts)[i].book_name, book_name) == 0) {
+            indexToDelete = i;
             break;
         }
     }
+
+    if (indexToDelete != -1) {
+        // Décalage des emprunts restants
+        for (int i = indexToDelete; i < *numEmprunts - 1; ++i) {
+            (*emprunts)[i] = (*emprunts)[i + 1];
+        }
+        // Diminution du nombre total d'emprunts
+        (*numEmprunts)--;
+        
+        // Réallocation de mémoire si nécessaire
+        if (*numEmprunts > 0) {
+            *emprunts = realloc(*emprunts, *numEmprunts * sizeof(struct Emprunt));
+            if (*emprunts == NULL) {
+                printf("Erreur lors de la réallocation de mémoire.\n");
+                return;
+            }
+        } else {
+            // Si le nombre d'emprunts est devenu nul, libérer la mémoire et mettre le pointeur à NULL
+            free(*emprunts);
+            *emprunts = NULL;
+        }
+    } else {
+        printf("Erreur: Impossible de trouver l'emprunt avec le nom du livre %s\n", book_name);
+        return;
+    }
+
+    // Écriture de la liste mise à jour dans le fichier
+    saveEmpruntsToFile(*emprunts, *numEmprunts);
+    // Recharger la liste des emprunts depuis le fichier
+    loadEmpruntsFromFile(emprunts,numEmprunts);
 }
+
+void editEmprunt(struct Emprunt* emprunts, int numEmprunts, char book_name[], char emprunt_date_str[], char return_date_str[]) {
+    // Recherche de l'emprunt par le nom du livre
+    int indexToEdit = -1;
+    for (int i = 0; i < numEmprunts; ++i) {
+        if (strcmp(emprunts[i].book_name, book_name) == 0) {
+            indexToEdit = i;
+            break;
+        }
+    }
+
+    if (indexToEdit != -1) {
+        // Modification des données de l'emprunt
+        strcpy(emprunts[indexToEdit].emprunt_date_str, emprunt_date_str);
+        strcpy(emprunts[indexToEdit].return_date_str, return_date_str);
+
+        // Écriture de la liste mise à jour dans le fichier
+        saveEmpruntsToFile(emprunts, numEmprunts);
+
+        // Afficher un message de confirmation
+        printf("Emprunt modifié avec succès.\n");
+    } else {
+        printf("Erreur: Impossible de trouver l'emprunt avec le nom du livre %s\n", book_name);
+    }
+}
+
+int countEmpruntsByBookName(struct Emprunt* emprunts, int numEmprunts, char book_name[]) {
+    int count = 0;
+    for (int i = 0; i < numEmprunts; ++i) {
+        if (strcmp(emprunts[i].book_name, book_name) == 0) {
+            count++;
+        }
+    }
+    return count;
+}
+
+struct Emprunt** searchEmpruntsByBookName(struct Emprunt* emprunts, int numEmprunts, char book_name[]) {
+    int count = countEmpruntsByBookName(emprunts, numEmprunts, book_name);
+    if (count == 0) {
+        return NULL; // Aucun emprunt correspondant trouvé
+    }
+    
+    struct Emprunt** result = (struct Emprunt**)malloc(count * sizeof(struct Emprunt*));
+    if (result == NULL) {
+        printf("Erreur lors de l'allocation de mémoire.\n");
+        return NULL;
+    }
+    
+    int index = 0;
+    for (int i = 0; i < numEmprunts; ++i) {
+        if (strstr(emprunts[i].book_name, book_name) != NULL) {
+            // Vérifier si l'index dépasse le nombre d'emprunts trouvés
+            if (index >= count) {
+                break; // Arrêter la boucle si on a déjà trouvé tous les emprunts nécessaires
+            }
+            // Allouer de la mémoire pour stocker une copie de l'emprunt correspondant
+            result[index] = (struct Emprunt*)malloc(sizeof(struct Emprunt));
+            if (result[index] == NULL) {
+                printf("Erreur lors de l'allocation de mémoire pour l'emprunt correspondant.\n");
+                // Libérer la mémoire allouée pour les emprunts précédents
+                for (int j = 0; j < index; ++j) {
+                    free(result[j]);
+                }
+                free(result);
+                return NULL;
+            }
+            // Copier l'emprunt correspondant dans la mémoire allouée
+            strcpy(result[index]->student_name, emprunts[i].student_name);
+            strcpy(result[index]->book_name, emprunts[i].book_name);
+            strcpy(result[index]->emprunt_date_str, emprunts[i].emprunt_date_str);
+            strcpy(result[index]->return_date_str, emprunts[i].return_date_str);
+            // Incrémenter l'index pour le prochain emprunt correspondant
+            index++;
+        }
+    }
+    
+    return result;
+}
+
+

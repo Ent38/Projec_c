@@ -16,16 +16,15 @@ void displayMainMenu() {
     printf("3. Gérer les emprunts\n");
     printf("0. Quitter\n");
 }
-
 int main() {
     // Initialisation des données
-    struct Student students[100];
+    struct Student *students[100];
     int numStudents = 0;
 
-    struct Book library[100];
+    struct Book *library[100];
     int numBooks = 0;
 
-    struct Emprunt emprunts[100];
+    struct Emprunt *emprunts[100];
     int numEmprunts = 0;
 
     // Charger les données depuis les fichiers
@@ -45,23 +44,20 @@ int main() {
         switch (choice) {
             case 1:
                 // Accéder au menu pour gérer les étudiants
-                studentMenu(students, &numStudents, library, numBooks, emprunts, &numEmprunts);
+                studentMenu(*students, &numStudents, *library, numBooks, *emprunts, &numEmprunts);
                 break;
             case 2:
                 // Accéder au menu pour gérer les livres
-                booksMenu(library, &numBooks,students, numStudents,emprunts, numEmprunts);
+                booksMenu(*library, &numBooks, *students, numStudents, *emprunts, numEmprunts);
                 break;
             case 3:
                 // Accéder au menu pour gérer les emprunts
-                empruntMenu(emprunts, &numEmprunts,students, numStudents,library, numBooks);
+                empruntMenu(*emprunts, &numEmprunts);
                 break;
             case 0:
                 // Quitter le programme
                 printf("Au revoir !\n");
                 // Sauvegarder les données dans les fichiers
-                saveStudentsToFile(students, numStudents);
-                saveBooksToFile(library, numBooks);
-                saveEmpruntsToFile(emprunts, &numEmprunts);
                 break;
             default:
                 printf("Choix invalide. Veuillez choisir une option valide.\n");

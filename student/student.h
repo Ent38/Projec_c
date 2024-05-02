@@ -2,10 +2,10 @@
 #define STUDENTS_H
 
 #include "../emprunt/emprunt.h"
-
-struct Book;
+#include "../books/books.h"
 
 struct Emprunt;
+struct Book;
 
 // Structure pour représenter un étudiant
 struct Student {
@@ -15,12 +15,12 @@ struct Student {
     int codep;
 };
 
-struct Student createStudent(char name[], int number, char email[], int codep);
+struct Student* createStudent(struct Student** students, int* numStudents,char name[], int number, char email[], int codep);
 void displayStudentList(struct Student* students, int numStudents, struct Emprunt* emprunts, int numEmprunts, struct Book* library, int numBooks);
 void saveStudentsToFile(struct Student* students, int numStudents);
-void loadStudentsFromFile(struct Student* students, int* numStudents);
+void loadStudentsFromFile(struct Student** students, int* numStudents);
 struct Student *searchStudentByNumber(struct Student students[], int numStudents, int number);
 void editStudent(struct Student* students, int numStudents, int number, char name[], char email[], int codep);
-void deleteStudent(struct Student* students, int codep, int* numStudents);
+void deleteStudent(struct Student** students, int codep, int* numStudents);
 
 #endif // STUDENTS_H

@@ -11,7 +11,7 @@ struct Emprunt ;
 struct Student;
 struct Book;
 
-void empruntMenu(struct Emprunt *emprunts, int *numEmprunts, struct Student *students, int numStudents, struct Book *library, int numBooks);
+void empruntMenu(struct Emprunt *emprunts, int *numEmprunts);
 
 #endif // EMPRUNT_MENU_H
  

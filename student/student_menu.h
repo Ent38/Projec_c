@@ -11,5 +11,5 @@ struct Emprunt;
 // Structure pour représenter un étudiant
 struct Student ;
 
-void studentMenu(struct Student *students, int *numStudents,struct Book * library, int numBooks,struct Emprunt *emprunts, int *numEmprunts );
+void studentMenu(struct Student *students, int *numStudents,struct Book * library, int numBooks,struct Emprunt *emprunts, int *numEmprunts  );
 #endif // STUDENT_MENU_H

@@ -1,7 +1,6 @@
 josue,1,josue@gmail.com,2
 james,2,siping@gmail.com,2312
 marie,3,marie@yahoo.com,10
-pierre,4,pierre@hotmail.com,555
 sophie,5,sophie@gmail.com,1234
 lucas,6,lucas@hotmail.com,9876
 emma,7,emma@yahoo.com,5432
@@ -29,9 +28,7 @@ louise,28,louise@gmail.com,4446
 tom,29,tom@yahoo.com,5433
 clara,30,clara@hotmail.com,7778
 enzo,31,enzo@gmail.com,1233
-inès,32,ines@yahoo.com,9998
 maël,33,mael@hotmail.com,1113
-anaïs,34,anais@gmail.com,5434
 noah,35,noah@yahoo.com,8887
 léon,36,leon@hotmail.com,4447
 élise,37,elise@gmail.com,3335
@@ -47,4 +44,8 @@ olivia,46,olivia@gmail.com,7770
 clément,47,clement@yahoo.com,5437
 eva,48,eva@hotmail.com,1115
 lola,49,lola@gmail.com,8885
-axelofils,50,axelofils@gmail.com,5438
+papa alex,50,papa@gmail.com,2354
+josaphate,0,josaphate@gmail.com,1111
+josue,1,josue@gmail.com,2
+demto,31,demto@gmail.com,452
+alifax,51,alifax@gmail.com,3834

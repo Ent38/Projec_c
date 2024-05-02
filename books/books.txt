@@ -3,7 +3,6 @@ mariville,  action,2,josh,0
 jackson,  thriller,3,alex,0
 springfield,  comedy,4,lucy,0
 hillsborough,  drama,5,sophie,0
-westminster,  adventure,6,jack,0
 franklin,  mystery,7,emma,0
 clayton,  fantasy,8,oliver,0
 newport,  horror,9,mia,0
@@ -97,3 +96,7 @@ jefferson,  adventure,96,harper,0
 hamilton,  mystery,97,lily,0
 franklin,  fantasy,98,lucas,0
 clayton,  horror,99,ava,0
+malahata,religieu,3945,josue,0
+la suite,essay,100,moi meme,0
+lautre livre,zero lecture,3432,les lectuers,0
+mon livre,la lecture,3432,le lectuer,0

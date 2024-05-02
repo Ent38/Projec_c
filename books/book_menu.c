@@ -35,7 +35,8 @@ void booksMenu(struct Book *library, int *numBooks,struct Student *students, int
                 scanf("%d", &code);
                 printf("Entrez l'auteur du livre : ");
                 scanf(" %[^\n]", author);
-                library[*numBooks++] = createBook(name, category, code, author);
+                library[*numBooks] = *createBook(&library,numBooks,name,category,code,author);
+                (*numBooks)++;
                 printf("Livre créé avec succès.\n");
                 break;
             }
@@ -53,7 +54,7 @@ void booksMenu(struct Book *library, int *numBooks,struct Student *students, int
                         scanf(" %[^\n]", category);
                         printf("Entrez le nouvel auteur du livre : ");
                         scanf(" %[^\n]", author);
-                        editBook(library, code, name, category, author, numBooks);
+                        editBook(library, code, name, category, author, *numBooks);
                         printf("Livre modifié avec succès.\n");
                         break;
                     }
@@ -65,7 +66,7 @@ void booksMenu(struct Book *library, int *numBooks,struct Student *students, int
                 int code;
                 printf("Entrez le code du livre à supprimer : ");
                 scanf("%d", &code);
-                deleteBook(library, code, numBooks);
+                deleteBook(&library, code, numBooks);
                 printf("Livre supprimé avec succès.\n");
                 break;
             }
