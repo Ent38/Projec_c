@@ -13,7 +13,6 @@ void displayEmprunts(struct Emprunt* emprunts, int numEmprunts) {
     printf("Liste des emprunts :\n");
     for (int i = 0; i < numEmprunts; ++i) {
 
-        // Affichage de l'emprunt avec la date d'emprunt et la date de retour
         printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
         printf("|   Étudiant : %s   | Livre : %s      | Date d'emprunt : %s | Date de retour : %s\n", emprunts[i].student_name, emprunts[i].book_name, emprunts[i].emprunt_date_str, emprunts[i].return_date_str);
         printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
@@ -22,30 +21,26 @@ void displayEmprunts(struct Emprunt* emprunts, int numEmprunts) {
 
 
 struct Emprunt* createEmprunt(struct Emprunt** emprunts, int* numEmprunts, char student_name[], char book_name[], char return_date_str[], char emprunt_date_str[]) {
-    // Allouer de la mémoire pour le nouvel emprunt
     struct Emprunt* new_emprunt = (struct Emprunt*)malloc(sizeof(struct Emprunt));
     if (new_emprunt == NULL) {
         printf("Erreur: Impossible d'allouer de la mémoire pour le nouvel emprunt.\n");
         return NULL;
     }
 
-    // Copier les informations de l'emprunt
     strcpy(new_emprunt->student_name, student_name);
     strcpy(new_emprunt->book_name, book_name);
     strcpy(new_emprunt->return_date_str, return_date_str);
     strcpy(new_emprunt->emprunt_date_str, emprunt_date_str);
 
-    // Ajouter le nouvel emprunt à la liste
     *numEmprunts += 1;
     *emprunts = realloc(*emprunts, (*numEmprunts) * sizeof(struct Emprunt*));
     if (*emprunts == NULL) {
         printf("Erreur: Impossible de réallouer de la mémoire pour la liste d'emprunts.\n");
-        free(new_emprunt); // Libérer la mémoire allouée pour le nouvel emprunt
+        free(new_emprunt); 
         return NULL;
     }
     (*emprunts)[(*numEmprunts) - 1] = *new_emprunt;
 
-    // Sauvegarder la liste mise à jour dans le fichier
     saveEmpruntsToFile(*emprunts, *numEmprunts);
 
     return new_emprunt;
@@ -74,7 +69,6 @@ void loadEmpruntsFromFile(struct Emprunt** emprunts, int* numEmprunts) {
     *emprunts = NULL;
 
     while (1) {
-        // Allouer de la mémoire pour un nouvel emprunt
         *emprunts = realloc(*emprunts, (*numEmprunts + 1) * sizeof(struct Emprunt));
         if (*emprunts == NULL) {
             printf("Erreur lors de la réallocation de mémoire.\n");
@@ -82,12 +76,10 @@ void loadEmpruntsFromFile(struct Emprunt** emprunts, int* numEmprunts) {
             return;
         }
 
-        // Lire les informations de l'emprunt depuis le fichier
         if (fscanf(file, "%s %s %s %s \n", (*emprunts)[*numEmprunts].student_name, (*emprunts)[*numEmprunts].book_name,(*emprunts)[*numEmprunts].emprunt_date_str, (*emprunts)[*numEmprunts].return_date_str) == 4) {
 
             (*numEmprunts)++;
         } else {
-            // Si la lecture échoue, sortir de la boucle
             break;
         }
     }
@@ -96,7 +88,6 @@ void loadEmpruntsFromFile(struct Emprunt** emprunts, int* numEmprunts) {
 }
 
 void deleteEmprunt(struct Emprunt** emprunts, char book_name[], int* numEmprunts) {
-    // Recherche de l'emprunt par le nom du livre
     int indexToDelete = -1;
     for (int i = 0; i < *numEmprunts; ++i) {
         if (strcmp((*emprunts)[i].book_name, book_name) == 0) {
@@ -106,14 +97,11 @@ void deleteEmprunt(struct Emprunt** emprunts, char book_name[], int* numEmprunts
     }
 
     if (indexToDelete != -1) {
-        // Décalage des emprunts restants
         for (int i = indexToDelete; i < *numEmprunts - 1; ++i) {
             (*emprunts)[i] = (*emprunts)[i + 1];
         }
-        // Diminution du nombre total d'emprunts
         (*numEmprunts)--;
         
-        // Réallocation de mémoire si nécessaire
         if (*numEmprunts > 0) {
             *emprunts = realloc(*emprunts, *numEmprunts * sizeof(struct Emprunt));
             if (*emprunts == NULL) {
@@ -121,7 +109,6 @@ void deleteEmprunt(struct Emprunt** emprunts, char book_name[], int* numEmprunts
                 return;
             }
         } else {
-            // Si le nombre d'emprunts est devenu nul, libérer la mémoire et mettre le pointeur à NULL
             free(*emprunts);
             *emprunts = NULL;
         }
@@ -130,9 +117,7 @@ void deleteEmprunt(struct Emprunt** emprunts, char book_name[], int* numEmprunts
         return;
     }
 
-    // Écriture de la liste mise à jour dans le fichier
     saveEmpruntsToFile(*emprunts, *numEmprunts);
-    // Recharger la liste des emprunts depuis le fichier
     loadEmpruntsFromFile(emprunts,numEmprunts);
 }
 
@@ -147,14 +132,11 @@ void editEmprunt(struct Emprunt* emprunts, int numEmprunts, char book_name[], ch
     }
 
     if (indexToEdit != -1) {
-        // Modification des données de l'emprunt
         strcpy(emprunts[indexToEdit].emprunt_date_str, emprunt_date_str);
         strcpy(emprunts[indexToEdit].return_date_str, return_date_str);
 
-        // Écriture de la liste mise à jour dans le fichier
         saveEmpruntsToFile(emprunts, numEmprunts);
 
-        // Afficher un message de confirmation
         printf("Emprunt modifié avec succès.\n");
     } else {
         printf("Erreur: Impossible de trouver l'emprunt avec le nom du livre %s\n", book_name);
@@ -186,27 +168,22 @@ struct Emprunt** searchEmpruntsByBookName(struct Emprunt* emprunts, int numEmpru
     int index = 0;
     for (int i = 0; i < numEmprunts; ++i) {
         if (strstr(emprunts[i].book_name, book_name) != NULL) {
-            // Vérifier si l'index dépasse le nombre d'emprunts trouvés
             if (index >= count) {
-                break; // Arrêter la boucle si on a déjà trouvé tous les emprunts nécessaires
+                break; 
             }
-            // Allouer de la mémoire pour stocker une copie de l'emprunt correspondant
             result[index] = (struct Emprunt*)malloc(sizeof(struct Emprunt));
             if (result[index] == NULL) {
                 printf("Erreur lors de l'allocation de mémoire pour l'emprunt correspondant.\n");
-                // Libérer la mémoire allouée pour les emprunts précédents
                 for (int j = 0; j < index; ++j) {
                     free(result[j]);
                 }
                 free(result);
                 return NULL;
             }
-            // Copier l'emprunt correspondant dans la mémoire allouée
             strcpy(result[index]->student_name, emprunts[i].student_name);
             strcpy(result[index]->book_name, emprunts[i].book_name);
             strcpy(result[index]->emprunt_date_str, emprunts[i].emprunt_date_str);
             strcpy(result[index]->return_date_str, emprunts[i].return_date_str);
-            // Incrémenter l'index pour le prochain emprunt correspondant
             index++;
         }
     }

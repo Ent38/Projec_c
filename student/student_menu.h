@@ -8,7 +8,6 @@ struct Book;
 
 struct Emprunt;
 
-// Structure pour représenter un étudiant
 struct Student ;
 
 void studentMenu(struct Student *students, int *numStudents,struct Book * library, int numBooks,struct Emprunt *emprunts, int *numEmprunts  );

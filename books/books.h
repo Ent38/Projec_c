@@ -6,13 +6,12 @@ struct Emprunt;
 
 struct Student;
 
-// Structure pour représenter un livre
 struct Book {
     char name[50];
     char category[50];
     int code;
     char author[50];
-    int rented; // 1 si emprunté, 0 sinon
+    int rented; 
 };
 
 struct Book* createBook(struct Book** library, int* numBooks,char name[], char category[], int code, char author[]) ;

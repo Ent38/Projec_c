@@ -2,12 +2,9 @@
 #define BOOK_MENU_H
 #include "books.h"
 
-#include "../student/student.h"  // Inclure student.h avant la déclaration de struct Book
-
-// Déclaration avancée de la structure Emprunt
+#include "../student/student.h"  
 struct Emprunt;
 
-// Déclaration complète de la structure Student
 struct Student;
 
 struct Book ;

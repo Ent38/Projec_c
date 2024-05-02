@@ -7,7 +7,6 @@
 struct Emprunt;
 struct Book;
 
-// Structure pour représenter un étudiant
 struct Student {
     char name[50];
     int number;

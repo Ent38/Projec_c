@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "emprunt.h" // Inclure le fichier d'en-tête pour accéder aux fonctions de gestion des emprunts
+#include "emprunt.h" 
 
 void displayEmpruntMenu() {
     printf("\nMenu Emprunt :\n");
@@ -28,12 +28,10 @@ void empruntMenu(struct Emprunt *emprunts, int *numEmprunts) {
                 scanf("%s", student_name);
                 printf("Entrez le nom du livre : ");
                 scanf("%s", book_name);
-                // Demander la date d'emprunt à l'utilisateur
                 printf("Entrez la date d'emprunt (JJ/MM/AAAA) : ");
                 char emprunt_date_str[20];
                 scanf("%s", emprunt_date_str);
 
-                // Demander la date de retour à l'utilisateur
                 printf("Entrez la date de retour (JJ/MM/AAAA) : ");
                 char return_date_str[20];
                 scanf("%s", return_date_str);
@@ -72,12 +70,10 @@ void empruntMenu(struct Emprunt *emprunts, int *numEmprunts) {
                 break;
             }
             case 4: {
-                // Afficher la liste des emprunts
                 displayEmprunts(emprunts, *numEmprunts);
                 break;
             }  
            case 5: {
-                // Rechercher un emprunt par le nom du livre
                 char book_name[50];
                 printf("Entrez le nom du livre : ");
                 scanf("%s", book_name);
@@ -90,7 +86,6 @@ void empruntMenu(struct Emprunt *emprunts, int *numEmprunts) {
                         printf("| Nom de l'étudiant : %s   | Nom du livre : %s  | Date d'emprunt : %s  | Date de retour : %s  |\n", found_emprunts[i]->student_name, found_emprunts[i]->book_name, found_emprunts[i]->emprunt_date_str, found_emprunts[i]->return_date_str);
                         printf("|--------------------------------------------------------------------------------------------------------------------------|\n");
                     }
-                    // N'oubliez pas de libérer la mémoire allouée pour le tableau de pointeurs
                     free(found_emprunts);
                 } else {
                     printf("Aucun emprunt trouvé pour le livre '%s'.\n", book_name);
@@ -99,7 +94,6 @@ void empruntMenu(struct Emprunt *emprunts, int *numEmprunts) {
             }
 
             case 0:
-                // Revenir au menu principal
                 break;
             default:
                 printf("Choix invalide. Veuillez choisir une option valide.\n");

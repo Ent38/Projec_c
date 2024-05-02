@@ -27,7 +27,6 @@ int main() {
     struct Emprunt *emprunts[100];
     int numEmprunts = 0;
 
-    // Charger les données depuis les fichiers
     loadStudentsFromFile(students, &numStudents);
     loadBooksFromFile(library, &numBooks);
     loadEmpruntsFromFile(emprunts, &numEmprunts);
@@ -37,7 +36,6 @@ int main() {
         // Afficher le menu principal
         displayMainMenu();
         
-        // Demander à l'utilisateur de choisir une option
         printf("Choisissez une option : ");
         scanf("%d", &choice);
 
@@ -57,7 +55,6 @@ int main() {
             case 0:
                 // Quitter le programme
                 printf("Au revoir !\n");
-                // Sauvegarder les données dans les fichiers
                 break;
             default:
                 printf("Choix invalide. Veuillez choisir une option valide.\n");

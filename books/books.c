@@ -16,19 +16,17 @@ struct Book* createBook(struct Book** library, int* numBooks,char name[], char c
     strcpy(new_book->category, category);
     new_book->code = code;
     strcpy(new_book->author, author);
-    new_book->rented = 0; // Nouveau livre, donc non emprunté
+    new_book->rented = 0; 
 
     // Ajouter le nouveau livre à la liste
-    (*numBooks) += 1; // Augmenter le nombre total de livres
-    *library = realloc(*library, (*numBooks) * sizeof(struct Book)); // Réallouer de la mémoire pour la nouvelle taille
+    (*numBooks) += 1; 
+    *library = realloc(*library, (*numBooks) * sizeof(struct Book)); 
     if (*library == NULL) {
         printf("Erreur: Impossible de réallouer de la mémoire pour la liste de livres.\n");
-        free(new_book); // Libérer la mémoire allouée pour le nouveau livre
+        free(new_book); 
         return NULL;
     }
-    (*library)[(*numBooks) - 1] = *new_book; // Ajouter le nouveau livre à la dernière position de la liste
-
-    // Sauvegarder la liste mise à jour dans le fichier
+    (*library)[(*numBooks) - 1] = *new_book; 
     saveBookToFile(*library, *numBooks);
     loadBooksFromFile(library,numBooks);
 
@@ -55,7 +53,7 @@ void loadBooksFromFile(struct Book** library, int* numBooks) {
         if (*library == NULL) {
             printf("Erreur lors de la réallocation de mémoire.\n");
             fclose(file);
-            free(*library); // Libérer la mémoire allouée en cas d'erreur
+            free(*library); 
             return;
         }
     }
@@ -135,11 +133,10 @@ void displayBookList(struct Book* library, int numBooks, struct Emprunt* emprunt
         // Vérifier si le livre est emprunté
         int emprunt_found = 0;
         for (int j = 0; j < numEmprunts; ++j) {
-            if (strcmp(emprunts[j].book_name, library[i].name) == 0) { // Vérifier si le livre correspond à un emprunt
+            if (strcmp(emprunts[j].book_name, library[i].name) == 0) { 
                 emprunt_found = 1;
-                // Vérifier si l'emprunt est encore actif
                 for (int k = 0; k < numStudents; ++k) {
-                    if (strcmp(emprunts[j].student_name, students[k].name) == 0) { // Trouver l'étudiant correspondant à l'emprunt
+                    if (strcmp(emprunts[j].student_name, students[k].name) == 0) { 
                         printf("  - Ce livre est emprunté par l'étudiant : %s\n", students[k].name);
                         break;
                     }
@@ -148,7 +145,6 @@ void displayBookList(struct Book* library, int numBooks, struct Emprunt* emprunt
             }
         }
         
-        // Si le livre n'est pas trouvé dans la liste des emprunts, il est disponible
         if (!emprunt_found) {
             printf("  - Ce livre est disponible\n");
         }
@@ -159,8 +155,8 @@ void displayBookList(struct Book* library, int numBooks, struct Emprunt* emprunt
 struct Book *searchBookByCode(struct Book library[], int numBooks, int code) {
     for (int i = 0; i < numBooks; i++) {
         if (library[i].code == code) {
-            return &library[i]; // Retourne un pointeur vers le livre trouvé
+            return &library[i]; 
         }
     }
-    return NULL; // Si aucun livre avec le code donné n'est trouvé, retourne NULL
+    return NULL; 
 }

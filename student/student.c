@@ -23,17 +23,15 @@ struct Student* createStudent(struct Student** students, int* numStudents ,char 
     strcpy(new_student->email, email);
     new_student->codep = codep;
 
-    // Ajouter le nouvel étudiant à la fin de la liste
-    (*numStudents) += 1; // Augmenter le nombre total d'étudiants
-    *students = realloc(*students, (*numStudents) * sizeof(struct Student)); // Réallouer de la mémoire pour la nouvelle taille
+    (*numStudents) += 1; 
+    *students = realloc(*students, (*numStudents) * sizeof(struct Student)); 
     if (*students == NULL) {
         printf("Erreur: Impossible de réallouer de la mémoire pour la liste d'étudiants.\n");
         free(new_student); // Libérer la mémoire allouée pour le nouvel étudiant
         return NULL;
     }
-    (*students)[(*numStudents) - 1] = *new_student; // Ajouter le nouvel étudiant à la dernière position de la liste
+    (*students)[(*numStudents) - 1] = *new_student; 
 
-    // Sauvegarder la liste mise à jour dans le fichier
     saveStudentsToFile(*students, *numStudents);
     loadStudentsFromFile(students, numStudents);
 
@@ -85,7 +83,6 @@ void deleteStudent(struct Student** students, int number, int* numStudents) {
         return;
     }
 
-    // Suppression de l'étudiant de la liste
     int indexToDelete = -1;
     for (int i = 0; i < *numStudents; ++i) {
         if ((*students)[i].number == number) {
@@ -111,27 +108,20 @@ void deleteStudent(struct Student** students, int number, int* numStudents) {
         return;
     }
 
-    // Écriture de la liste mise à jour dans le fichier
     saveStudentsToFile(*students, *numStudents);
-
-    // Recharger la liste des étudiants depuis le fichier
     loadStudentsFromFile(students, numStudents);
 }
 
 void editStudent(struct Student* students, int numStudents, int number, char name[], char email[], int codep) {
-    // Recherche de l'étudiant par son numéro
     struct Student* studentToEdit = searchStudentByNumber(students, numStudents, number);
 
     if (studentToEdit != NULL) {
-        // Modification des données de l'étudiant
         strcpy(studentToEdit->name, name);
         strcpy(studentToEdit->email, email);
         studentToEdit->codep = codep;
 
-        // Écriture de la liste mise à jour dans le fichier
         saveStudentsToFile(students, numStudents);
         
-        // Recharger la liste des étudiants depuis le fichier
         loadStudentsFromFile(&students, &numStudents);
 
         printf("Étudiant modifié avec succès.\n");

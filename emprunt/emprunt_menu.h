@@ -1,7 +1,7 @@
 #ifndef EMPRUNT_MENU_H
 #define EMPRUNT_MENU_H
 #include <time.h>
-#define MAX_EMPRUNTS 100 // Définir le nombre maximal d'emprunts
+#define MAX_EMPRUNTS 100
 #include "../student/student.h"
 #include "../books/books.h"
 #include "emprunt.h"
